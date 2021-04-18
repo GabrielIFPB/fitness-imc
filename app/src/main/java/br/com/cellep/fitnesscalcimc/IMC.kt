@@ -1,10 +1,13 @@
 package br.com.cellep.fitnesscalcimc
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import br.com.cellep.fitnesscalcimc.databinding.ActivityImcBinding
 import kotlin.math.pow
 
@@ -27,8 +30,18 @@ class IMC : AppCompatActivity() {
 		this.height = this.binding.editTextImcHeight.text.toString()
 		if (this.validated()) {
 			val imc = this.weight.toFloat() / (this.height.toFloat() / 100).pow(2)
-//			Toast.makeText(this, String.format("%.2f", imc), Toast.LENGTH_SHORT).show()
-			Toast.makeText(this, this.imcResponse(imc), Toast.LENGTH_SHORT).show()
+			val alert = AlertDialog.Builder(this)
+				.setTitle(this.getString(R.string.imc_response, imc))
+				.setMessage(this.imcResponse(imc))
+				.setPositiveButton(android.R.string.ok) {_, _ ->
+				}
+				.create()
+
+			alert.show()
+
+			val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+			keyboard.hideSoftInputFromWindow(this.binding.editTextImcWeight.windowToken, 0)
+			keyboard.hideSoftInputFromWindow(this.binding.editTextImcHeight.windowToken, 0)
 		}
 	}
 
