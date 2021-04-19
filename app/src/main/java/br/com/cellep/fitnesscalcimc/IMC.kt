@@ -38,19 +38,7 @@ class IMC : AppCompatActivity() {
 		}
 	}
 
-	private fun validated() : Boolean = this.validatedHeight() && this.validatedWeight()
-
-	private fun validatedHeight() : Boolean {
-		if (this.height.isNotEmpty()) {
-			if (this.height.startsWith("0")) {
-				this.toast(R.string.error_height)
-				return false
-			}
-			return true
-		}
-		this.toast(R.string.empty_height)
-		return false
-	}
+	private fun validated() : Boolean = this.validatedWeight() && this.validatedHeight()
 
 	private fun validatedWeight() : Boolean {
 		if (this.weight.isNotEmpty()) {
@@ -61,6 +49,18 @@ class IMC : AppCompatActivity() {
 			return true
 		}
 		this.toast(R.string.empty_weight)
+		return false
+	}
+
+	private fun validatedHeight() : Boolean {
+		if (this.height.isNotEmpty()) {
+			if (this.height.startsWith("0")) {
+				this.toast(R.string.error_height)
+				return false
+			}
+			return true
+		}
+		this.toast(R.string.empty_height)
 		return false
 	}
 
