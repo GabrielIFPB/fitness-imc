@@ -30,14 +30,7 @@ class IMC : AppCompatActivity() {
 		this.height = this.binding.editTextImcHeight.text.toString()
 		if (this.validated()) {
 			val imc = this.weight.toFloat() / (this.height.toFloat() / 100).pow(2)
-			val alert = AlertDialog.Builder(this)
-				.setTitle(this.getString(R.string.imc_response, imc))
-				.setMessage(this.imcResponse(imc))
-				.setPositiveButton(android.R.string.ok) {_, _ ->
-				}
-				.create()
-
-			alert.show()
+			this.alert(imc)
 
 			val keyboard = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 			keyboard.hideSoftInputFromWindow(this.binding.editTextImcWeight.windowToken, 0)
@@ -45,27 +38,44 @@ class IMC : AppCompatActivity() {
 		}
 	}
 
-	private fun validated() : Boolean {
-		if (this.weight.isNotEmpty()) {
-			if (this.weight.startsWith("0")) {
-				Toast.makeText(this, R.string.error_weight, Toast.LENGTH_SHORT).show()
-				return false
-			}
-		} else {
-			Toast.makeText(this, R.string.empty_weight, Toast.LENGTH_SHORT).show()
-			return false
-		}
+	private fun validated() : Boolean = this.validatedHeight() && this.validatedWeight()
 
+	private fun validatedHeight() : Boolean {
 		if (this.height.isNotEmpty()) {
 			if (this.height.startsWith("0")) {
-				Toast.makeText(this, R.string.error_height, Toast.LENGTH_SHORT).show()
+				this.toast(R.string.error_height)
 				return false
 			}
-		} else {
-			Toast.makeText(this, R.string.empty_height, Toast.LENGTH_SHORT).show()
-			return false
+			return true
 		}
-		return true
+		this.toast(R.string.empty_height)
+		return false
+	}
+
+	private fun validatedWeight() : Boolean {
+		if (this.weight.isNotEmpty()) {
+			if (this.weight.startsWith("0")) {
+				this.toast(R.string.error_weight)
+				return false
+			}
+			return true
+		}
+		this.toast(R.string.empty_weight)
+		return false
+	}
+
+	private fun toast(@StringRes str: Int) {
+		Toast.makeText(this, str, Toast.LENGTH_SHORT).show()
+	}
+
+	private fun alert(imc: Float) {
+		val alert = AlertDialog.Builder(this)
+			.setTitle(this.getString(R.string.imc_response, imc))
+			.setMessage(this.imcResponse(imc))
+			.setPositiveButton(android.R.string.ok) {_, _ -> }
+			.create()
+
+		alert.show()
 	}
 
 	@StringRes
