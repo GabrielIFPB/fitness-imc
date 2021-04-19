@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import br.com.cellep.fitnesscalcimc.databinding.ActivityImcBinding
 import kotlin.math.pow
 
-class IMC : AppCompatActivity() {
+class IMCActivity : AppCompatActivity() {
 
 	private lateinit var binding: ActivityImcBinding
 	private var weight: String = ""
