@@ -31,4 +31,5 @@
 	<string name="error_weight">O peso deve ser maior que 0.</string>
 	<string name="empty_height">Preencha a altura.</string>
 	<string name="empty_weight">Preencha o peso.</string>
+	<string name="savedImc">Registro salvo com sucesso.</string>
 </resources>

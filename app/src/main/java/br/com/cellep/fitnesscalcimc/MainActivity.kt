@@ -21,16 +21,10 @@ class MainActivity : AppCompatActivity() {
 
 	private var items = mutableListOf<Item>()
 
-	companion object {
-		lateinit var instance: MainActivity
-			private set
-	}
-
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		this.binding = ActivityMainBinding.inflate(layoutInflater)
 		this.setContentView(this.binding.root)
-		instance = this
 
 		this.initItems()
 
@@ -60,13 +54,13 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun getIMCActivity() {
-		val intent = Intent(instance, IMCActivity::class.java)
-		instance.startActivity(intent)
+		val intent = Intent(this, IMCActivity::class.java)
+		this.startActivity(intent)
 	}
 
 	private fun getTMBActivity() {
-		val intent = Intent(instance, TMBActivity::class.java)
-		instance.startActivity(intent)
+		val intent = Intent(this, TMBActivity::class.java)
+		this.startActivity(intent)
 	}
 
 	private class MainAdapter(private val items: List<Item>) : RecyclerView.Adapter<MainAdapter.MainHolder>() {

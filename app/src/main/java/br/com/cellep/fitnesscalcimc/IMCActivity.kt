@@ -9,6 +9,10 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import br.com.cellep.fitnesscalcimc.databinding.ActivityImcBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.pow
 
 class IMCActivity : AppCompatActivity() {
@@ -73,9 +77,23 @@ class IMCActivity : AppCompatActivity() {
 			.setTitle(this.getString(R.string.imc_response, imc))
 			.setMessage(this.imcResponse(imc))
 			.setPositiveButton(android.R.string.ok) {_, _ -> }
+			.setNegativeButton(R.string.save) { _, _ ->
+				this.saveImc(imc)
+			}
 			.create()
 
 		alert.show()
+	}
+
+	private  fun saveImc(imc: Float) {
+		val context = this.baseContext
+		CoroutineScope(Dispatchers.IO).launch {
+			val calcID = SqlHelper.getInstance(context).addItem("IMC", imc)
+			withContext(Dispatchers.Main) {
+				if (calcID > 0)
+					toast(R.string.savedImc)
+			}
+		}
 	}
 
 	@StringRes
