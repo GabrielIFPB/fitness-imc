@@ -1,6 +1,7 @@
 package br.com.cellep.fitnesscalcimc
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -85,15 +86,23 @@ class IMCActivity : AppCompatActivity() {
 		alert.show()
 	}
 
-	private  fun saveImc(imc: Float) {
+	private fun saveImc(imc: Float) {
 		val context = this.baseContext
 		CoroutineScope(Dispatchers.IO).launch {
 			val calcID = SqlHelper.getInstance(context).addItem("IMC", imc)
 			withContext(Dispatchers.Main) {
-				if (calcID > 0)
+				if (calcID > 0) {
 					toast(R.string.savedImc)
+					showListCalcActivity()
+				}
 			}
 		}
+	}
+
+	private fun showListCalcActivity() {
+		val intent = Intent(this, ListCalcActivity::class.java)
+		intent.putExtra("type", "IMC")
+		this.startActivity(intent)
 	}
 
 	@StringRes

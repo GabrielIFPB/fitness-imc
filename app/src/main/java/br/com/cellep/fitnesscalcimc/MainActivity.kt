@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 		this.initItems()
 
 		this.adapter = MainAdapter(this.items)
-		this.adapter.setListener(listener)
+		this.adapter.setListener(this.listener)
 		this.binding.recycleViewMain.adapter = this.adapter
 		this.binding.recycleViewMain.layoutManager = GridLayoutManager(this, 2)
 	}
