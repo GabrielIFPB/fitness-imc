@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -21,6 +23,11 @@ class IMCActivity : AppCompatActivity() {
 	private lateinit var binding: ActivityImcBinding
 	private var weight: String = ""
 	private var height: String = ""
+
+	companion object {
+		private const val COLUMN_TYPE = "type"
+		private const val COLUMN_VALUE = "IMC"
+	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -89,7 +96,7 @@ class IMCActivity : AppCompatActivity() {
 	private fun saveImc(imc: Float) {
 		val context = this.baseContext
 		CoroutineScope(Dispatchers.IO).launch {
-			val calcID = SqlHelper.getInstance(context).addItem("IMC", imc)
+			val calcID = SqlHelper.getInstance(context).addItem(COLUMN_VALUE, imc)
 			withContext(Dispatchers.Main) {
 				if (calcID > 0) {
 					toast(R.string.savedImc)
@@ -101,7 +108,7 @@ class IMCActivity : AppCompatActivity() {
 
 	private fun showListCalcActivity() {
 		val intent = Intent(this, ListCalcActivity::class.java)
-		intent.putExtra("type", "IMC")
+		intent.putExtra(COLUMN_TYPE, COLUMN_VALUE)
 		this.startActivity(intent)
 	}
 
@@ -115,5 +122,18 @@ class IMCActivity : AppCompatActivity() {
 		imc < 35 -> R.string.imc_so_high_weight
 		imc < 40 -> R.string.imc_severely_high_weight
 		else -> R.string.imc_extreme_weight
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+		this.menuInflater.inflate(R.menu.menu, menu)
+		return super.onCreateOptionsMenu(menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+		R.id.menu_list -> {
+			this.showListCalcActivity()
+			true
+		}
+		else -> super.onOptionsItemSelected(item)
 	}
 }
